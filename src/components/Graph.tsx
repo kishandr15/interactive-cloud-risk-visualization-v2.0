@@ -272,11 +272,15 @@ const Graph = () => {
 
   // Compute total alerts/misconfigs for the root node
   const rootTotals = useMemo(() => {
+    // Only sum direct children: cloud and saas
+    const children = ["cloud", "saas"];
     let alerts = 0;
     let misconfigs = 0;
     for (const node of graphData.nodes) {
-      alerts += node.alerts;
-      misconfigs += node.misconfigs;
+      if (children.includes(node.id)) {
+        alerts += node.alerts;
+        misconfigs += node.misconfigs;
+      }
     }
     return { alerts, misconfigs };
   }, []);
